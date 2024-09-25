@@ -1,9 +1,9 @@
 package service;
 
-import com.itb.grupo4.tcc.exceptions.BadRequest;
-import com.itb.grupo4.tcc.exceptions.NotFound;
-import com.itb.grupo4.tcc.model.Cadastro;
-import com.itb.grupo4.tcc.repository.CadastroRepository;
+import exceptions.BadRequest;
+import exceptions.NotFound;
+import model.Cadastro;
+import repository.CadastroRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +19,9 @@ public class CadastroServiceImpl implements CadastroService {
 
     @Override
     public Cadastro salvarCadastro(Cadastro cadastro) {
-        if (!cadastro.validarCadastro()) {
+        cadastro.setCodStatus(true);
+        cadastro.validar(); // Chama o método validar()
+        if (!cadastro.isValid()) { // Verifica se o cadastro é válido
             throw new BadRequest(cadastro.getMensagemErro());
         }
         return cadastroRepository.save(cadastro);
@@ -42,13 +44,14 @@ public class CadastroServiceImpl implements CadastroService {
 
     @Override
     public Cadastro listarCadastroPorId(Long id) {
-        return cadastroRepository.findById(id)
-                .orElseThrow(() -> new NotFound("Cadastro não encontrado com o id " + id));
+        return cadastroRepository.findById(id).orElseThrow(() ->
+                new NotFound("Cadastro não encontrado com o id " + id));
     }
 
     @Override
     public Cadastro atualizarCadastro(Cadastro cadastro, Long id) {
-        if (!cadastro.validarCadastro()) {
+        cadastro.validar(); // Chama o método validar()
+        if (!cadastro.isValid()) { // Verifica se o cadastro é válido
             throw new BadRequest(cadastro.getMensagemErro());
         }
         if (!cadastroRepository.existsById(id)) {
@@ -56,7 +59,7 @@ public class CadastroServiceImpl implements CadastroService {
         }
         Cadastro cadastroDb = cadastroRepository.findById(id).get();
         cadastroDb.setNome(cadastro.getNome());
-        cadastroDb.setEmail(cadastro.getEmail());
+        // Atualize outros campos conforme necessário
 
         return cadastroRepository.save(cadastroDb);
     }
