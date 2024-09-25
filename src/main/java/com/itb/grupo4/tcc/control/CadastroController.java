@@ -1,13 +1,8 @@
 package com.itb.grupo4.tcc.control;
 
-<<<<<<< HEAD
-import model.Cadastro;
-import service.CadastroService;
-import org.springframework.stereotype.Controller;
-=======
 import com.itb.grupo4.tcc.model.Cadastro;
 import com.itb.grupo4.tcc.service.CadastroService;
->>>>>>> 9d10dda (teste)
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import java.net.URI;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/v1") // Altera o mapeamento base
+@Controller
+@RequestMapping("/api/v1/cadastro") // Altera o mapeamento base
 public class CadastroController {
 
     private final CadastroService cadastroService;
@@ -25,12 +20,12 @@ public class CadastroController {
         this.cadastroService = cadastroService;
     }
 
-    @GetMapping("/cadastro")
+    @GetMapping
     public ResponseEntity<List<Cadastro>> listarTodosCadastros() {
         return ResponseEntity.ok(cadastroService.listarTodosCadastros());
     }
 
-    @PostMapping("/cadastro")
+    @PostMapping
     public ResponseEntity<Cadastro> salvarCadastro(@RequestBody Cadastro cadastro) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/v1/cadastro").toUriString());

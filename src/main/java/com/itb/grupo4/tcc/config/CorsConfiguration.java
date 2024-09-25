@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-package config;
-=======
 package com.itb.grupo4.tcc.config;
->>>>>>> 9d10dda (teste)
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
