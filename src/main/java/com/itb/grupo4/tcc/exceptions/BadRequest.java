@@ -1,4 +1,4 @@
-package exceptions;
+package com.itb.grupo4.tcc.exceptions;
 
 public class BadRequest extends RuntimeException {
 

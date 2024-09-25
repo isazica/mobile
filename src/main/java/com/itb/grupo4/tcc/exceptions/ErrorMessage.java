@@ -1,4 +1,4 @@
-package exceptions;
+package com.itb.grupo4.tcc.exceptions;
 
 import org.springframework.http.HttpStatus;
 

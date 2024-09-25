@@ -1,9 +1,17 @@
-package service;
+package com.itb.grupo4.tcc.service;
 
+<<<<<<< HEAD
 import exceptions.BadRequest;
 import exceptions.NotFound;
 import model.Cadastro;
 import repository.CadastroRepository;
+=======
+import com.itb.grupo4.tcc.exceptions.BadRequest;
+import com.itb.grupo4.tcc.exceptions.NotFound;
+import com.itb.grupo4.tcc.model.Cadastro;
+import com.itb.grupo4.tcc.repository.CadastroRepository;
+import com.itb.grupo4.tcc.service.CadastroService;
+>>>>>>> 9d10dda (teste)
 import org.springframework.stereotype.Service;
 
 import java.util.List;

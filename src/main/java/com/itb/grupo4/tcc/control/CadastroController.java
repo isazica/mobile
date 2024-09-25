@@ -1,8 +1,13 @@
-package control;
+package com.itb.grupo4.tcc.control;
 
+<<<<<<< HEAD
 import model.Cadastro;
 import service.CadastroService;
 import org.springframework.stereotype.Controller;
+=======
+import com.itb.grupo4.tcc.model.Cadastro;
+import com.itb.grupo4.tcc.service.CadastroService;
+>>>>>>> 9d10dda (teste)
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;

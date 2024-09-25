@@ -1,14 +1,28 @@
-package model;
+package com.itb.grupo4.tcc.model;
 
+import jakarta.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "Cadastro")
 public class Cadastro {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String nome;
+
+    @Column(nullable = false)
     private String sexo;
-    private Date dataNascimento;
+
+    @Column(name = "data_nasci", nullable = false) // Atualizado para o novo nome
+    private Date data_nasci; // Nome do atributo atualizado
+
+    @Column(nullable = false)
     private int idade;
+
     private String cpf;
     private String telefone;
     private String logradouro;
@@ -16,12 +30,21 @@ public class Cadastro {
     private String bairro;
     private String cidade;
     private String uf;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String senha;
+
+    @Column(nullable = false)
     private boolean codStatus;
 
     // Atributos de apoio
+    @Transient
     private String mensagemErro = "";
+
+    @Transient
     private boolean isValid = true;
 
     // Construtor padrão
@@ -52,12 +75,12 @@ public class Cadastro {
         this.sexo = sexo;
     }
 
-    public Date getDataNascimento() {
-        return dataNascimento;
+    public Date getData_nasci() { // Método getter atualizado
+        return data_nasci;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
-        this.dataNascimento = dataNascimento;
+    public void setData_nasci(Date data_nasci) { // Método setter atualizado
+        this.data_nasci = data_nasci;
     }
 
     public int getIdade() {
@@ -152,10 +175,6 @@ public class Cadastro {
         return mensagemErro;
     }
 
-    public void setMensagemErro(String mensagemErro) {
-        this.mensagemErro = mensagemErro;
-    }
-
     public boolean isValid() {
         return isValid;
     }
@@ -165,12 +184,12 @@ public class Cadastro {
     }
 
     // Método para validar o cadastro
-    public void validar() {
-        // Implementar a lógica de validação aqui
+    public boolean validar() {
         if (nome == null || nome.isEmpty()) {
             isValid = false;
             mensagemErro = "Nome é obrigatório.";
         }
         // Adicione outras validações conforme necessário
+        return isValid;
     }
 }

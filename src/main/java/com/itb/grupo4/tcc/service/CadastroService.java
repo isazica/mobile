@@ -1,4 +1,4 @@
-package service;
+package com.itb.grupo4.tcc.service;
 
 import com.itb.grupo4.tcc.model.Cadastro;
 import java.util.List;
