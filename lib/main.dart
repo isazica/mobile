@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  final primaryColor = Color(0xFFEF5350);  // Vermelho suave
+  final primaryColor = Color(0xFFEF5350); // Vermelho suave
   final secondaryColor = Color(0xFFF1F1F1); // Cinza claro
 
   @override
@@ -29,10 +29,10 @@ class MyApp extends StatelessWidget {
           labelStyle: TextStyle(color: primaryColor),
         ),
         checkboxTheme: CheckboxThemeData(
-          fillColor: MaterialStateProperty.all(primaryColor),
+          fillColor: WidgetStateProperty.all(primaryColor),
         ),
         radioTheme: RadioThemeData(
-          fillColor: MaterialStateProperty.all(primaryColor),
+          fillColor: WidgetStateProperty.all(primaryColor),
         ),
       ),
       home: CadastroForm(),
@@ -240,34 +240,25 @@ class _CadastroFormState extends State<CadastroForm> {
                 cursor: SystemMouseCursors.click,
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-                      if (states.contains(MaterialState.hovered)) {
-                        return Colors.grey[200]!; // Fundo cinza claro ao passar o mouse
-                      }
-                      return Colors.white; // Fundo branco normal
-                    }),
-                    foregroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-                      if (states.contains(MaterialState.hovered)) {
-                        return primaryColor.withOpacity(0.8); // Texto vermelho suave no hover
-                      }
-                      return primaryColor; // Texto vermelho normal
-                    }),
-                    shape: MaterialStateProperty.all(
+                    backgroundColor: WidgetStateProperty.all(
+                      Colors.white,
+                    ),
+                    foregroundColor: WidgetStateProperty.all(
+                      primaryColor,
+                    ),
+                    shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                         side: BorderSide(color: primaryColor),
                       ),
                     ),
-                    padding: MaterialStateProperty.all(
+                    padding: WidgetStateProperty.all(
                       EdgeInsets.symmetric(horizontal: 32, vertical: 14),
                     ),
-                    elevation: MaterialStateProperty.resolveWith<double>((states) {
-                      if (states.contains(MaterialState.hovered)) {
-                        return 6; // Sombra maior ao passar o mouse
-                      }
-                      return 0; // Sem sombra normal
-                    }),
-                    textStyle: MaterialStateProperty.all(
+                    elevation: WidgetStateProperty.all(
+                      0.0,
+                    ),
+                    textStyle: WidgetStateProperty.all(
                       TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
