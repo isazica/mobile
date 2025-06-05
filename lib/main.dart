@@ -1,24 +1,40 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'dart:typed_data';
-import 'login.dart';
-import 'feedback.dart';
-import 'cadastroDoacao.dart';
-import 'perfil.dart';
-import 'categoria.dart';
-import 'suporte.dart';
-import 'sobre.dart';
-import 'telaInicial.dart';
-import 'doacaoDinheiro.dart';
-import 'trocaSenha.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  final primaryColor = Color(0xFFEF5350);  // Vermelho suave
+  final secondaryColor = Color(0xFFF1F1F1); // Cinza claro
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: 'Coração Generoso',
+      theme: ThemeData(
+        primaryColor: primaryColor,
+        scaffoldBackgroundColor: secondaryColor,
+        fontFamily: 'Roboto',
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: primaryColor),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: primaryColor, width: 2),
+          ),
+          labelStyle: TextStyle(color: primaryColor),
+        ),
+        checkboxTheme: CheckboxThemeData(
+          fillColor: MaterialStateProperty.all(primaryColor),
+        ),
+        radioTheme: RadioThemeData(
+          fillColor: MaterialStateProperty.all(primaryColor),
+        ),
+      ),
       home: CadastroForm(),
     );
   }
@@ -35,20 +51,34 @@ class _CadastroFormState extends State<CadastroForm> {
   String _email = '';
   String _senha = '';
   String _conhecimentoProjeto = 'Escolha';
-  String? _sexo = 'Masculino'; // Valor inicial (Masculino)
+  String? _sexo = 'Masculino'; 
   bool _aceitouTermos = false;
   bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).primaryColor;
+
     return Scaffold(
-      appBar: AppBar(title: Text('Cadastro de Usuário')),
-      body: Container(
-        color: Color(0xFFFFEBF0),
-        padding: EdgeInsets.all(16),
+      appBar: AppBar(
+        title: Text(
+          'Coração Generoso',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            letterSpacing: 1.2,
+          ),
+        ),
+        centerTitle: true,
+        elevation: 4,
+        backgroundColor: primaryColor,
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(24),
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
                 decoration: InputDecoration(labelText: 'Nome'),
@@ -60,6 +90,7 @@ class _CadastroFormState extends State<CadastroForm> {
                 },
                 onSaved: (value) => _nome = value ?? '',
               ),
+              SizedBox(height: 16),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Email'),
                 keyboardType: TextInputType.emailAddress,
@@ -74,12 +105,14 @@ class _CadastroFormState extends State<CadastroForm> {
                 },
                 onSaved: (value) => _email = value ?? '',
               ),
+              SizedBox(height: 16),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Senha',
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: primaryColor,
                     ),
                     onPressed: () {
                       setState(() {
@@ -100,10 +133,8 @@ class _CadastroFormState extends State<CadastroForm> {
                 },
                 onSaved: (value) => _senha = value ?? '',
               ),
-              SizedBox(height: 20),
-              
-              // Adição do campo de "Onde você conheceu o projeto?"
-              Text('Onde você conheceu o projeto?'),
+              SizedBox(height: 24),
+              Text('Onde você conheceu o projeto?', style: TextStyle(fontWeight: FontWeight.w600)),
               DropdownButtonFormField<String>(
                 value: _conhecimentoProjeto,
                 items: <String>['Escolha', 'Redes sociais', 'Amigos', 'Publicidade', 'Outro']
@@ -125,10 +156,8 @@ class _CadastroFormState extends State<CadastroForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
-              
-              // Adição do campo "Sexo"
-              Text('Sexo'),
+              SizedBox(height: 24),
+              Text('Sexo', style: TextStyle(fontWeight: FontWeight.w600)),
               Row(
                 children: [
                   Radio<String>(
@@ -141,6 +170,7 @@ class _CadastroFormState extends State<CadastroForm> {
                     },
                   ),
                   Text('Masculino'),
+                  SizedBox(width: 12),
                   Radio<String>(
                     value: 'Feminino',
                     groupValue: _sexo,
@@ -151,6 +181,7 @@ class _CadastroFormState extends State<CadastroForm> {
                     },
                   ),
                   Text('Feminino'),
+                  SizedBox(width: 12),
                   Radio<String>(
                     value: 'Outro',
                     groupValue: _sexo,
@@ -163,9 +194,7 @@ class _CadastroFormState extends State<CadastroForm> {
                   Text('Outro'),
                 ],
               ),
-              SizedBox(height: 20),
-
-              // Adição do campo de "Aceitar Termos"
+              SizedBox(height: 24),
               Row(
                 children: [
                   Checkbox(
@@ -187,7 +216,8 @@ class _CadastroFormState extends State<CadastroForm> {
                         'Aceito os Termos e Condições',
                         style: TextStyle(
                           decoration: TextDecoration.underline,
-                          color: Colors.blue,
+                          color: primaryColor,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
@@ -199,26 +229,64 @@ class _CadastroFormState extends State<CadastroForm> {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Text(
                     'Você precisa aceitar os termos e condições para continuar.',
-                    style: TextStyle(color: Colors.red),
+                    style: TextStyle(
+                      color: Colors.orange[700], // Tom laranja suave
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                child: Text('Cadastrar'),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    if (!_aceitouTermos) {
+              SizedBox(height: 32),
+              MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
+                      if (states.contains(MaterialState.hovered)) {
+                        return Colors.grey[200]!; // Fundo cinza claro ao passar o mouse
+                      }
+                      return Colors.white; // Fundo branco normal
+                    }),
+                    foregroundColor: MaterialStateProperty.resolveWith<Color>((states) {
+                      if (states.contains(MaterialState.hovered)) {
+                        return primaryColor.withOpacity(0.8); // Texto vermelho suave no hover
+                      }
+                      return primaryColor; // Texto vermelho normal
+                    }),
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        side: BorderSide(color: primaryColor),
+                      ),
+                    ),
+                    padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+                    ),
+                    elevation: MaterialStateProperty.resolveWith<double>((states) {
+                      if (states.contains(MaterialState.hovered)) {
+                        return 6; // Sombra maior ao passar o mouse
+                      }
+                      return 0; // Sem sombra normal
+                    }),
+                    textStyle: MaterialStateProperty.all(
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      if (!_aceitouTermos) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Você deve aceitar os termos e condições')),
+                        );
+                        return;
+                      }
+                      _formKey.currentState!.save();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Você deve aceitar os termos e condições')),
+                        SnackBar(content: Text('Cadastrado: $_nome ($_email)')),
                       );
-                      return;
                     }
-                    _formKey.currentState!.save();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Cadastrado: $_nome ($_email)')),
-                    );
-                  }
-                },
+                  },
+                  child: Text('Cadastrar'),
+                ),
               ),
             ],
           ),
