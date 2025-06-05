@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'login.dart';
+import 'feedback.dart';
+import 'cadastroDoacao.dart';
+import 'perfil.dart';
+import 'categoria.dart';
+import 'suporte.dart';
+import 'sobre.dart';
+import 'telaInicial.dart';
+import 'doacaoDinheiro.dart';
+import 'trocaSenha.dart';
 
 void main() => runApp(MyApp());
 
