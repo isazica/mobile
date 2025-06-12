@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
- 
+import 'login.dart'; // Importa a tela de login
+
 void main() => runApp(MyApp());
- 
+
 class MyApp extends StatelessWidget {
   final Color primaryColor = Color(0xFFEF5350);
- 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,24 +15,24 @@ class MyApp extends StatelessWidget {
     );
   }
 }
- 
+
 class CadastroForm extends StatefulWidget {
   @override
   _CadastroFormState createState() => _CadastroFormState();
 }
- 
+
 class _CadastroFormState extends State<CadastroForm> {
   final _nomeController = TextEditingController();
   final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
- 
+
   String _conhecimentoProjeto = 'Escolha';
   String? _sexo = 'Masculino';
   bool _aceitouTermos = false;
   bool _obscureText = true;
- 
+
   final Color primaryColor = Color(0xFFEF5350);
- 
+
   @override
   void dispose() {
     _nomeController.dispose();
@@ -39,7 +40,7 @@ class _CadastroFormState extends State<CadastroForm> {
     _senhaController.dispose();
     super.dispose();
   }
- 
+
   void _showMessage(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -49,20 +50,20 @@ class _CadastroFormState extends State<CadastroForm> {
       ),
     );
   }
- 
+
   void _onCadastrar() {
     if (_nomeController.text.isEmpty) {
       _showMessage('Por favor, insira seu nome');
       return;
     }
- 
+
     String email = _emailController.text;
- 
+
     if (!email.contains('@') || !email.endsWith('.com')) {
       _showMessage('Por favor, insira um email válido que contenha "@" e termine com ".com"');
       return;
     }
- 
+
     if (_senhaController.text.isEmpty || _senhaController.text.length < 6) {
       _showMessage('Senha deve ter pelo menos 6 caracteres');
       return;
@@ -75,14 +76,18 @@ class _CadastroFormState extends State<CadastroForm> {
       _showMessage('Você deve aceitar os termos e condições');
       return;
     }
- 
+
     _showMessage('Cadastrado: ${_nomeController.text} (${_emailController.text})');
   }
- 
+
   void _onLogin() {
-    _showMessage('Ação de Login não implementada.');
+    // Navega para a tela de login
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +121,7 @@ class _CadastroFormState extends State<CadastroForm> {
                   ),
                 ),
                 SizedBox(height: 16),
- 
+
                 // Email
                 Text('Email', style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8),
@@ -136,7 +141,7 @@ class _CadastroFormState extends State<CadastroForm> {
                   ),
                 ),
                 SizedBox(height: 16),
- 
+
                 // Senha
                 Text('Senha', style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8),
@@ -172,7 +177,7 @@ class _CadastroFormState extends State<CadastroForm> {
                   ),
                 ),
                 SizedBox(height: 24),
- 
+
                 // Conheceu o projeto
                 Text('Onde você conheceu o projeto?', style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8),
@@ -198,7 +203,7 @@ class _CadastroFormState extends State<CadastroForm> {
                   ),
                 ),
                 SizedBox(height: 24),
- 
+
                 // Sexo
                 Text('Sexo', style: TextStyle(fontWeight: FontWeight.bold)),
                 Row(
@@ -226,7 +231,7 @@ class _CadastroFormState extends State<CadastroForm> {
                   ],
                 ),
                 SizedBox(height: 24),
- 
+
                 // Termos
                 Row(
                   children: [
@@ -250,7 +255,7 @@ class _CadastroFormState extends State<CadastroForm> {
                   ],
                 ),
                 SizedBox(height: 32),
- 
+
                 // Botão Cadastrar
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -270,9 +275,9 @@ class _CadastroFormState extends State<CadastroForm> {
                     ),
                   ),
                 ),
- 
+
                 SizedBox(height: 16),
- 
+
                 // Botão Login
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -282,7 +287,7 @@ class _CadastroFormState extends State<CadastroForm> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  onPressed: _onLogin,
+                  onPressed: _onLogin, // Navega para LoginScreen
                   child: Text(
                     'Login',
                     style: TextStyle(
