@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'login.dart'; // Importa a tela de login
+import 'login.dart';
+import 'telaInicial.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,8 +11,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primaryColor: primaryColor),
-      home: CadastroForm(),
+      title: 'Coração generoso',
+      theme: ThemeData(
+        primaryColor: primaryColor,
+        colorScheme: ColorScheme.fromSwatch().copyWith(primary: primaryColor),
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => CadastroForm(),
+        '/login': (context) => LoginScreen(),
+        '/telaInicial': (context) => TelaInicial(),
+        // '/eventos': (context) => TelaEventos(), // futuramente
+      },
     );
   }
 }
@@ -78,14 +89,13 @@ class _CadastroFormState extends State<CadastroForm> {
     }
 
     _showMessage('Cadastrado: ${_nomeController.text} (${_emailController.text})');
+    
+    // Aqui você pode navegar para a tela inicial após cadastro
+    Navigator.pushReplacementNamed(context, '/telaInicial');
   }
 
   void _onLogin() {
-    // Navega para a tela de login
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
-    );
+    Navigator.pushNamed(context, '/login');
   }
 
   @override
@@ -103,7 +113,6 @@ class _CadastroFormState extends State<CadastroForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Nome
                 Text('Nome', style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8),
                 Container(
@@ -122,7 +131,6 @@ class _CadastroFormState extends State<CadastroForm> {
                 ),
                 SizedBox(height: 16),
 
-                // Email
                 Text('Email', style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8),
                 Container(
@@ -142,7 +150,6 @@ class _CadastroFormState extends State<CadastroForm> {
                 ),
                 SizedBox(height: 16),
 
-                // Senha
                 Text('Senha', style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8),
                 Container(
@@ -178,7 +185,6 @@ class _CadastroFormState extends State<CadastroForm> {
                 ),
                 SizedBox(height: 24),
 
-                // Conheceu o projeto
                 Text('Onde você conheceu o projeto?', style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8),
                 Container(
@@ -204,7 +210,6 @@ class _CadastroFormState extends State<CadastroForm> {
                 ),
                 SizedBox(height: 24),
 
-                // Sexo
                 Text('Sexo', style: TextStyle(fontWeight: FontWeight.bold)),
                 Row(
                   children: [
@@ -232,7 +237,6 @@ class _CadastroFormState extends State<CadastroForm> {
                 ),
                 SizedBox(height: 24),
 
-                // Termos
                 Row(
                   children: [
                     Checkbox(
@@ -256,7 +260,6 @@ class _CadastroFormState extends State<CadastroForm> {
                 ),
                 SizedBox(height: 32),
 
-                // Botão Cadastrar
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,
@@ -278,7 +281,6 @@ class _CadastroFormState extends State<CadastroForm> {
 
                 SizedBox(height: 16),
 
-                // Botão Login
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,
@@ -287,9 +289,9 @@ class _CadastroFormState extends State<CadastroForm> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  onPressed: _onLogin, // Navega para LoginScreen
+                  onPressed: _onLogin,
                   child: Text(
-                    'Login',
+                    'Já tem conta? Aperte aqui para Logar',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
