@@ -1,5 +1,5 @@
 {
-   "checksum": "c2324717f68ab417589bdd6435f86290",
+   "checksum": "1291794f9a32e9eb921ad0fdfae13012",
    "roots": {
       "bookmark_bar": {
          "children": [  ],
@@ -28,7 +28,7 @@
          "date_modified": "0",
          "guid": "4cf2e351-0e85-532b-bb37-df045d8f8d0f",
          "id": "3",
-         "name": "Favoritos nos dispositivos móveis",
+         "name": "Dispositivos Móveis",
          "type": "folder"
       }
    },
