@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'detalhes.dart';
 class TelaInicial extends StatelessWidget {
   const TelaInicial({super.key});
 

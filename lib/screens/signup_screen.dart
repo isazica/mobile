@@ -21,7 +21,9 @@ class _SignupScreenState extends State<SignupScreen> {
   String? _ondeConheceuSelecionado;
   bool _aceitaTermos = false;
 
-  final Color primaryColor = const Color(0xFFEF5350);
+  final Color primaryColor = const Color(0xFFD32F2F);
+  final Color secondaryColor = const Color(0xFF616161);
+  final Color accentColor = const Color(0xFFF8BBD9);
 
   final List<String> generos = ['Masculino', 'Feminino', 'Outro', 'Prefiro não dizer'];
   final List<String> opcoesOndeConheceu = [
@@ -136,7 +138,14 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cadastro'),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.favorite, color: accentColor, size: 24),
+            const SizedBox(width: 8),
+            const Text('Cadastro'),
+          ],
+        ),
         backgroundColor: primaryColor,
         centerTitle: true,
       ),
@@ -147,6 +156,21 @@ class _SignupScreenState extends State<SignupScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: accentColor.withOpacity(0.3),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.favorite,
+                      size: 50,
+                      color: primaryColor,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
                 const Text('Nome', style: TextStyle(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
                 Container(
@@ -331,10 +355,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 Center(
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacementNamed(context, '/login');
+                      Navigator.pushReplacementNamed(context, '/');
                     },
                     child: Text(
-                      'Já tem conta? Aperte aqui para logar',
+                      'Já tenho uma conta',
                       style: TextStyle(
                         color: primaryColor,
                         decoration: TextDecoration.underline,

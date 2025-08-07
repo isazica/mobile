@@ -10,7 +10,9 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final Color primaryColor = const Color(0xFFEF5350);
+  final Color primaryColor = const Color(0xFFE53935);
+  final Color secondaryColor = const Color(0xFF757575);
+  final Color accentColor = const Color(0xFFFFCDD2);
 
   final List<Map<String, dynamic>> usuarios = [
     {
@@ -405,7 +407,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         child: ListView(
           children: [
             const DrawerHeader(
-              decoration: BoxDecoration(color: Color(0xFFEF5350)),
+              decoration: BoxDecoration(color: Color(0xFFE53935)),
               child: Center(
                 child: Text(
                   'Menu',

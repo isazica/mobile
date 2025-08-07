@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
   bool _obscureText = true;
 
-  final Color primaryColor = Color(0xFFEF5350);
+  final Color primaryColor = const Color(0xFFD32F2F);
+  final Color secondaryColor = const Color(0xFF616161);
+  final Color accentColor = const Color(0xFFF8BBD9);
 
   @override
   void dispose() {
@@ -45,15 +49,22 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.pushReplacementNamed(context, '/telaInicial');
   }
 
-  void _voltarCadastro() {
-    Navigator.pushReplacementNamed(context, '/');
+  void _irParaCadastro() {
+    Navigator.pushReplacementNamed(context, '/signup');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.favorite, color: accentColor, size: 24),
+            const SizedBox(width: 8),
+            const Text('Login'),
+          ],
+        ),
         backgroundColor: primaryColor,
         centerTitle: true,
       ),
@@ -64,6 +75,21 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: accentColor.withOpacity(0.3),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.favorite,
+                      size: 60,
+                      color: primaryColor,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 32),
                 Text('Email', style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8),
                 Container(
@@ -136,9 +162,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 20),
 
                 TextButton(
-                  onPressed: _voltarCadastro,
+                  onPressed: _irParaCadastro,
                   child: Text(
-                    'Não tem conta? Cadastre-se',
+                    'Não tenho uma conta',
                     style: TextStyle(
                       color: primaryColor,
                       decoration: TextDecoration.underline,

@@ -2,55 +2,68 @@ import 'package:flutter/material.dart';
 
 import 'screens/signup_screen.dart';
 import 'screens/login_screen.dart';
-import 'screens/dashboard_screen.dart';
+import 'screens/perfil_screen.dart';
+import 'screens/configuracoes_screen.dart';
+import 'screens/sobre_nos_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // Remova const aqui, porque você está usando rotas dinâmicas que não são constantes
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CORAÇÃO GENEROSO', 
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: const Color(0xFFEF5350),  // Vermelho principal (mesmo da tela de login)
-        scaffoldBackgroundColor: Colors.white,  // Fundo branco para as telas
+        primaryColor: const Color(0xFFD32F2F),  // Vermelho principal mais escuro
+        scaffoldBackgroundColor: const Color(0xFFF5F5F5),  // Fundo cinza claro
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFEF5350),  // Barra de app na cor vermelha
-          foregroundColor: Colors.white,        // Textos e ícones da appbar em branco
-          elevation: 2,
+          backgroundColor: Color(0xFFD32F2F),  // Vermelho principal
+          foregroundColor: Colors.white,
+          elevation: 3,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFEF5350), // Botões em vermelho
-            foregroundColor: Colors.white,             // Texto branco nos botões
+            backgroundColor: const Color(0xFFD32F2F), // Vermelho principal
+            foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(12),
             ),
           ),
         ),
         inputDecorationTheme: const InputDecorationTheme(
           border: OutlineInputBorder(),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFFEF5350)),
+            borderSide: BorderSide(color: Color(0xFFD32F2F)),
           ),
-          labelStyle: TextStyle(color: Color(0xFFEF5350)),
-          floatingLabelStyle: TextStyle(color: Color(0xFFEF5350)),
+          labelStyle: TextStyle(color: Color(0xFF616161)),
+          floatingLabelStyle: TextStyle(color: Color(0xFFD32F2F)),
         ),
         textSelectionTheme: const TextSelectionThemeData(
-          cursorColor: Color(0xFFEF5350),
-          selectionColor: Color(0xFFEF5350),
-          selectionHandleColor: Color(0xFFEF5350),
+          cursorColor: Color(0xFFD32F2F),
+          selectionColor: Color(0xFFFFCDD2),
+          selectionHandleColor: Color(0xFFD32F2F),
+        ),
+        cardTheme: const CardThemeData(
+          color: Colors.white,
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+          ),
         ),
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => SignupScreen(),
-        '/login': (context) => LoginScreen(),
-        '/telaInicial': (context) => DashboardScreen(),
+        '/': (context) => const LoginScreen(),
+        '/signup': (context) => const SignupScreen(),
+        '/telaInicial': (context) => const DashboardScreen(),
+        '/perfil': (context) => const PerfilScreen(),
+        '/configuracoes': (context) => const ConfiguracoesScreen(),
+        '/sobre-nos': (context) => const SobreNosScreen(),
       },
     );
   }
@@ -67,35 +80,12 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final Color primaryColor = const Color(0xFFEF5350);
+  final Color primaryColor = const Color(0xFFD32F2F);    // Vermelho principal
+  final Color secondaryColor = const Color(0xFF616161);   // Cinza escuro
+  final Color accentColor = const Color(0xFFF8BBD9);      // Rosa claro
+  final Color lightGrayColor = const Color(0xFFE0E0E0);   // Cinza claro
 
-  final List<Map<String, dynamic>> usuarios = [
-    {
-      'id': 1,
-      'nome': 'Fulano da Silva',
-      'email': 'fulano@email.com.br',
-      'nivelAcesso': 'ADMIN',
-      'statusUsuario': 'ATIVO',
-      'avatar':
-          'https://randomuser.me/api/portraits/men/32.jpg', 
-    },
-    {
-      'id': 2,
-      'nome': 'Beltrana de Sá',
-      'email': 'beltrana@email.com.br',
-      'nivelAcesso': 'USER',
-      'statusUsuario': 'ATIVO',
-      'avatar': 'https://randomuser.me/api/portraits/women/44.jpg',
-    },
-    {
-      'id': 3,
-      'nome': 'Sicrana de Oliveira',
-      'email': 'sicrana@email.com.br',
-      'nivelAcesso': 'USER',
-      'statusUsuario': 'INATIVO',
-      'avatar': 'https://randomuser.me/api/portraits/women/68.jpg',
-    },
-  ];
+
 
   final List<Map<String, dynamic>> categorias = [
     {'id': 1, 'nome': 'Bazar'},
@@ -157,7 +147,6 @@ class _DashboardScreenState extends State<DashboardScreen>
   int? categoriaSelecionadaId;
 
   final List<String> tabs = [
-    'Usuários',
     'Categorias',
     'Eventos',
     'Suporte',
@@ -180,39 +169,9 @@ class _DashboardScreenState extends State<DashboardScreen>
     super.dispose();
   }
 
-  void _navigateToTab(int index) {
-    Navigator.pop(context);
-    setState(() {
-      _tabController.index = index;
-    });
-  }
 
-  Widget _buildUsuariosTab() {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      itemCount: usuarios.length,
-      itemBuilder: (context, i) {
-        final u = usuarios[i];
-        return Card(
-          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          child: ListTile(
-            leading: CircleAvatar(
-              radius: 28,
-              backgroundImage: NetworkImage(u['avatar']),
-              backgroundColor: Colors.grey[300],
-            ),
-            title: Text(u['nome'],
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text('${u['email']} • ${u['nivelAcesso']}'),
-            trailing: Icon(
-              u['statusUsuario'] == 'ATIVO' ? Icons.check_circle : Icons.cancel,
-              color: u['statusUsuario'] == 'ATIVO' ? Colors.green : Colors.red,
-            ),
-          ),
-        );
-      },
-    );
-  }
+
+
 
   Widget _buildCategoriasTab() {
     return Padding(
@@ -224,8 +183,8 @@ class _DashboardScreenState extends State<DashboardScreen>
           final isSelected = categoriaSelecionadaId == cat['id'];
           return ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: isSelected ? primaryColor : Colors.grey[300],
-              foregroundColor: isSelected ? Colors.white : Colors.black87,
+              backgroundColor: isSelected ? primaryColor : accentColor,
+              foregroundColor: isSelected ? Colors.white : secondaryColor,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25),
@@ -443,7 +402,6 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   List<Widget> get _tabViews => [
-        _buildUsuariosTab(),
         _buildCategoriasTab(),
         _buildEventosTab(),
         _buildSuporteTab(),
@@ -454,7 +412,15 @@ class _DashboardScreenState extends State<DashboardScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('CORAÇÃO GENEROSO'),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.favorite, color: accentColor, size: 28),
+            const SizedBox(width: 8),
+            const Text('CORAÇÃO GENEROSO'),
+          ],
+        ),
+        centerTitle: true,
         bottom: TabBar(
           controller: _tabController,
           labelColor: Colors.white,
@@ -480,13 +446,30 @@ class _DashboardScreenState extends State<DashboardScreen>
                 ),
               ),
             ),
-            ...List.generate(tabs.length, (index) {
-              return ListTile(
-                title: Text(tabs[index]),
-                selected: _tabController.index == index,
-                onTap: () => _navigateToTab(index),
-              );
-            }),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Perfil'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/perfil');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Configurações'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/configuracoes');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('Sobre Nós'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/sobre-nos');
+              },
+            ),
           ],
         ),
       ),

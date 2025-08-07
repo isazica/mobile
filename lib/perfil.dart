@@ -9,13 +9,13 @@ class PerfilScreen extends StatelessWidget {
   final String statusUsuario;
 
   const PerfilScreen({
-    Key? key,
+    super.key,
     required this.nome,
     required this.email,
     required this.avatarUrl,
     required this.nivelAcesso,
     required this.statusUsuario,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
