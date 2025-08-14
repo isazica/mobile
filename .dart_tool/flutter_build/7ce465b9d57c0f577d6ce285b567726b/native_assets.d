@@ -1,0 +1,1 @@
+ Z:\\3\ ANO\\TCC\\flutter\\.dart_tool\\flutter_build\\7ce465b9d57c0f577d6ce285b567726b\\native_assets.yaml: 

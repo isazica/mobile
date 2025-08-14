@@ -3,8 +3,17 @@ import 'package:flutter/material.dart';
 import 'screens/signup_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/perfil_screen.dart';
+import 'screens/suporte_screen.dart';
+import 'screens/meus_eventos_screen.dart';
 import 'screens/configuracoes_screen.dart';
 import 'screens/sobre_nos_screen.dart';
+import 'screens/favoritos_screen.dart';
+import 'screens/historico_screen.dart';
+import 'screens/detalhes_evento_screen.dart';
+import 'screens/politica_privacidade_screen.dart';
+import 'screens/termos_uso_screen.dart';
+import 'screens/meus_ingressos_screen.dart';
+import 'screens/feedback_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,16 +28,16 @@ class MyApp extends StatelessWidget {
       title: 'CORAÇÃO GENEROSO', 
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: const Color(0xFFD32F2F),  // Vermelho principal mais escuro
-        scaffoldBackgroundColor: const Color(0xFFF5F5F5),  // Fundo cinza claro
+        primaryColor: const Color(0xFFD32F2F),
+        scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFD32F2F),  // Vermelho principal
+          backgroundColor: Color(0xFFD32F2F),
           foregroundColor: Colors.white,
           elevation: 3,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFD32F2F), // Vermelho principal
+            backgroundColor: const Color(0xFFD32F2F),
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -48,7 +57,7 @@ class MyApp extends StatelessWidget {
           selectionColor: Color(0xFFFFCDD2),
           selectionHandleColor: Color(0xFFD32F2F),
         ),
-        cardTheme: const CardThemeData(
+        cardTheme: CardTheme(
           color: Colors.white,
           elevation: 2,
           shape: RoundedRectangleBorder(
@@ -62,14 +71,12 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignupScreen(),
         '/telaInicial': (context) => const DashboardScreen(),
         '/perfil': (context) => const PerfilScreen(),
-        '/configuracoes': (context) => const ConfiguracoesScreen(),
-        '/sobre-nos': (context) => const SobreNosScreen(),
+        '/politica-privacidade': (context) => const PoliticaPrivacidadeScreen(),
+        '/termos-uso': (context) => const TermosUsoScreen(),
       },
     );
   }
 }
-
-
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -77,405 +84,867 @@ class DashboardScreen extends StatefulWidget {
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  final Color primaryColor = const Color(0xFFD32F2F);    // Vermelho principal
-  final Color secondaryColor = const Color(0xFF616161);   // Cinza escuro
-  final Color accentColor = const Color(0xFFF8BBD9);      // Rosa claro
-  final Color lightGrayColor = const Color(0xFFE0E0E0);   // Cinza claro
-
-
-
-  final List<Map<String, dynamic>> categorias = [
-    {'id': 1, 'nome': 'Bazar'},
-    {'id': 2, 'nome': 'Almoço'},
-    {'id': 3, 'nome': 'Show'},
-  ];
+class _DashboardScreenState extends State<DashboardScreen> {
+  final Color primaryColor = const Color(0xFFD32F2F);
+  final Color secondaryColor = const Color(0xFF616161);
+  final Color accentColor = const Color(0xFFF8BBD9);
+  
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
 
   final List<Map<String, dynamic>> eventos = [
     {
       'id': 1,
       'nome': 'Bazar de Natal',
-      'descricao': 'Bazar beneficente com roupas e brinquedos',
+      'descricao': 'Bazar beneficente especial de Natal com roupas, brinquedos, livros e artesanatos. Toda a renda será destinada para famílias carentes da comunidade. Venha participar desta ação solidária e ajude a tornar o Natal de muitas crianças mais feliz!',
       'localEvento': 'Centro Comunitário',
       'dataEvento': '2025-12-10',
       'periodo': 'Manhã',
       'preco': 10.00,
-      'categoria_id': 1,
+      'categoria': 'Bazar',
+      'vagas': 50,
       'statusEvento': 'ATIVO',
-      'imagem':
-          'https://images.unsplash.com/photo-1513708922913-5f36b1fbd7e4?auto=format&fit=crop&w=800&q=60',
     },
     {
       'id': 2,
       'nome': 'Show de Rock',
-      'descricao': 'Show de rock com bandas locais',
+      'descricao': 'Show de rock beneficente com as melhores bandas locais da região. Uma noite inesquecível de música e solidariedade para arrecadar fundos para o projeto de música para jovens em situação de vulnerabilidade social.',
       'localEvento': 'Arena Municipal',
       'dataEvento': '2025-08-15',
       'periodo': 'Noite',
       'preco': 50.00,
-      'categoria_id': 3,
+      'categoria': 'Show',
+      'vagas': 200,
       'statusEvento': 'ATIVO',
-      'imagem':
-          'https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?auto=format&fit=crop&w=800&q=60',
     },
     {
       'id': 3,
       'nome': 'Almoço Comunitário',
-      'descricao': 'Almoço para a comunidade',
+      'descricao': 'Almoço solidário aberto para toda a comunidade. Um momento de confraternização e união, onde compartilhamos não apenas uma refeição, mas também histórias, sorrisos e esperança. Todos são bem-vindos!',
       'localEvento': 'Parque Central',
       'dataEvento': '2025-09-01',
       'periodo': 'Tarde',
       'preco': 15.00,
-      'categoria_id': 2,
+      'categoria': 'Almoço',
+      'vagas': 100,
       'statusEvento': 'ATIVO',
-      'imagem':
-          'https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=800&q=60',
     },
   ];
-
-  List<Map<String, dynamic>> suporteMensagens = [
-    {
-      'id': 1,
-      'emissor': 'Suporte',
-      'texto': 'Olá! Como podemos ajudar você hoje?',
-      'timestamp': DateTime.now().subtract(const Duration(minutes: 5)),
-    },
-  ];
-
-  int? categoriaSelecionadaId;
-
-  final List<String> tabs = [
-    'Categorias',
-    'Eventos',
-    'Suporte',
-    'Presenças'
-  ];
-
-  late TextEditingController _mensagemController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: tabs.length, vsync: this);
-    _mensagemController = TextEditingController();
-  }
 
   @override
   void dispose() {
-    _tabController.dispose();
-    _mensagemController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
+  final List<String> menuOptions = [
+    'Perfil', 'Meus Eventos', 'Meus Ingressos', 'Favoritos', 'Histórico', 'Dar Meu Feedback', 'Suporte', 'Configurações', 'Sobre Nós'
+  ];
 
+  List<dynamic> get filteredResults {
+    if (_searchQuery.isEmpty) {
+      return eventos.where((e) => e['statusEvento'] == 'ATIVO').toList();
+    }
+    
+    List<dynamic> results = [];
+    
+    // Buscar nos eventos
+    results.addAll(eventos
+        .where((e) =>
+            e['statusEvento'] == 'ATIVO' &&
+            (e['nome'].toLowerCase().contains(_searchQuery.toLowerCase()) ||
+                e['descricao'].toLowerCase().contains(_searchQuery.toLowerCase()) ||
+                e['localEvento'].toLowerCase().contains(_searchQuery.toLowerCase())))
+        .toList());
+    
+    // Buscar nas opções do menu
+    results.addAll(menuOptions
+        .where((option) => option.toLowerCase().contains(_searchQuery.toLowerCase()))
+        .map((option) => {'type': 'menu', 'name': option})
+        .toList());
+    
+    return results;
+  }
 
-
-
-  Widget _buildCategoriasTab() {
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: Wrap(
-        spacing: 14,
-        runSpacing: 12,
-        children: categorias.map((cat) {
-          final isSelected = categoriaSelecionadaId == cat['id'];
-          return ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: isSelected ? primaryColor : accentColor,
-              foregroundColor: isSelected ? Colors.white : secondaryColor,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
-              ),
-            ),
-            onPressed: () {
-              setState(() {
-                categoriaSelecionadaId = cat['id'];
-                _tabController.index = tabs.indexOf('Eventos');
-              });
-            },
-            child: Text(cat['nome'], style: const TextStyle(fontSize: 18)),
-          );
-        }).toList(),
+  Widget _buildSearchBar() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: TextField(
+        controller: _searchController,
+        decoration: InputDecoration(
+          hintText: 'Pesquisar eventos...',
+          prefixIcon: const Icon(Icons.search),
+          suffixIcon: _searchQuery.isNotEmpty
+              ? IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    setState(() {
+                      _searchController.clear();
+                      _searchQuery = '';
+                    });
+                  },
+                )
+              : null,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+          filled: true,
+          fillColor: Colors.white,
+        ),
+        onChanged: (value) {
+          setState(() {
+            _searchQuery = value;
+          });
+        },
       ),
     );
   }
 
-  Widget _buildEventosTab() {
-    final filtered = eventos
-        .where((e) =>
-            e['statusEvento'] == 'ATIVO' &&
-            (categoriaSelecionadaId == null ||
-                e['categoria_id'] == categoriaSelecionadaId))
-        .toList();
-
-    if (categoriaSelecionadaId != null && filtered.isEmpty) {
-      return Center(
-          child: Text('Nenhum evento ativo nesta categoria',
-              style: TextStyle(fontSize: 18, color: Colors.grey[700])));
-    }
-    if (categoriaSelecionadaId == null) {
-      return Center(
-          child: Text('Selecione uma categoria',
-              style: TextStyle(fontSize: 18, color: Colors.grey[700])));
-    }
-
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      itemCount: filtered.length,
-      itemBuilder: (context, i) {
-        final e = filtered[i];
-        return Card(
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-          clipBehavior: Clip.antiAlias,
-          elevation: 6,
-          child: Stack(
-            children: [
-              SizedBox(
-                height: 200,
-                width: double.infinity,
-                child: Image.network(
-                  e['imagem'],
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                  errorBuilder: (_, __, ___) => Container(
-                    color: Colors.grey[300],
-                    child:
-                        const Center(child: Icon(Icons.broken_image, size: 60)),
-                  ),
+  Widget _buildInfoSection() {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Card(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                gradient: const LinearGradient(
+                  colors: [Colors.white, Color(0xFFFCE4EC)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
               ),
-              Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.black.withOpacity(0.7),
-                      Colors.transparent,
-                    ],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 16,
-                bottom: 16,
-                right: 16,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      e['nome'],
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Text('❤️', style: TextStyle(fontSize: 24)),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Sobre Nossos Eventos',
+                        style: TextStyle(
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black87,
-                              blurRadius: 6,
-                              offset: Offset(0, 2),
-                            )
-                          ]),
+                          color: primaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'O Coração Generoso promove eventos solidários que transformam vidas e fortalecem nossa comunidade. Cada evento é uma oportunidade de fazer a diferença!',
+                    style: TextStyle(fontSize: 16, height: 1.5),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        const Text('🎯', style: TextStyle(fontSize: 32)),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Missão',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Conectar pessoas através de eventos solidários',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${e['descricao']}',
-                      style:
-                          const TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        const Text('🤝', style: TextStyle(fontSize: 32)),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'Comunidade',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Mais de 500 voluntários ativos',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 6),
-                    Text(
-                      '${e['localEvento']} • ${e['dataEvento']} • ${e['periodo']}',
-                      style:
-                          const TextStyle(color: Colors.white70, fontSize: 12),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'R\$ ${e['preco'].toStringAsFixed(2)}',
-                      style: const TextStyle(
-                          color: Colors.white70,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ],
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
-  Widget _buildSuporteTab() {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.all(12),
-            itemCount: suporteMensagens.length,
-            itemBuilder: (context, i) {
-              final msg = suporteMensagens[i];
-              final isEmissorSuporte = msg['emissor'] == 'Suporte';
-              return Container(
-                margin: const EdgeInsets.symmetric(vertical: 4),
-                alignment:
-                    isEmissorSuporte ? Alignment.centerLeft : Alignment.centerRight,
-                child: Container(
-                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: isEmissorSuporte ? Colors.grey[300] : primaryColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: const Radius.circular(20),
-                      topRight: const Radius.circular(20),
-                      bottomLeft: Radius.circular(isEmissorSuporte ? 0 : 20),
-                      bottomRight: Radius.circular(isEmissorSuporte ? 20 : 0),
+  Widget _buildSearchResults() {
+    final results = filteredResults;
+    
+    if (results.isEmpty) {
+      return Container(
+        margin: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(30),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Colors.white, Color(0xFFFCE4EC)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          children: [
+            const Text('🔍', style: TextStyle(fontSize: 64)),
+            const SizedBox(height: 16),
+            Text(
+              'Nenhum resultado encontrado para "$_searchQuery"',
+              style: TextStyle(fontSize: 18, color: Colors.grey[600]),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+    
+    return Container(
+      margin: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Resultados da pesquisa',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: primaryColor,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ...results.map((result) {
+            if (result['type'] == 'menu') {
+              return Card(
+                margin: const EdgeInsets.only(bottom: 8),
+                child: ListTile(
+                  leading: Icon(_getMenuIcon(result['name']), color: primaryColor),
+                  title: Text(result['name']),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () => _navigateToMenu(result['name']),
+                ),
+              );
+            } else {
+              return Card(
+                margin: const EdgeInsets.only(bottom: 16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                elevation: 6,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetalhesEventoScreen(evento: result),
+                      ),
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(18),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Colors.white, Color(0xFFFCE4EC)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(18),
                     ),
-                  ),
-                  child: Text(
-                    msg['texto'],
-                    style: TextStyle(
-                        color: isEmissorSuporte ? Colors.black87 : Colors.white,
-                        fontSize: 16),
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: primaryColor,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Icon(
+                            _getEventIcon(result['nome']),
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                result['nome'],
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                result['localEvento'],
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
-            },
-          ),
-        ),
-        Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 12).copyWith(bottom: 16),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _mensagemController,
-                  decoration: const InputDecoration(
-                    hintText: 'Digite sua mensagem...',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              ElevatedButton(
-                onPressed: () {
-                  final texto = _mensagemController.text.trim();
-                  if (texto.isEmpty) return;
-                  setState(() {
-                    suporteMensagens.add({
-                      'id': suporteMensagens.length + 1,
-                      'emissor': 'Usuário',
-                      'texto': texto,
-                      'timestamp': DateTime.now(),
-                    });
-                    _mensagemController.clear();
-                  });
-                },
-                child: const Icon(Icons.send),
-              )
-            ],
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget _buildPresencasTab() {
-    return Center(
-      child: Text(
-        'Presenças ainda não implementado',
-        style: TextStyle(fontSize: 18, color: Colors.grey[700]),
+            }
+          }).toList(),
+        ],
       ),
     );
   }
 
-  List<Widget> get _tabViews => [
-        _buildCategoriasTab(),
-        _buildEventosTab(),
-        _buildSuporteTab(),
-        _buildPresencasTab(),
-      ];
+  IconData _getMenuIcon(String menuName) {
+    switch (menuName) {
+      case 'Perfil': return Icons.person;
+      case 'Meus Eventos': return Icons.event;
+      case 'Meus Ingressos': return Icons.confirmation_number;
+      case 'Favoritos': return Icons.favorite;
+      case 'Histórico': return Icons.history;
+      case 'Dar Meu Feedback': return Icons.rate_review;
+      case 'Suporte': return Icons.support_agent;
+      case 'Configurações': return Icons.settings;
+      case 'Sobre Nós': return Icons.info;
+      default: return Icons.menu;
+    }
+  }
+
+  void _navigateToMenu(String menuName) {
+    switch (menuName) {
+      case 'Perfil':
+        Navigator.pushNamed(context, '/perfil');
+        break;
+      case 'Meus Eventos':
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const MeusEventosScreen()));
+        break;
+      case 'Meus Ingressos':
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const MeusIngressosScreen()));
+        break;
+      case 'Favoritos':
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const FavoritosScreen()));
+        break;
+      case 'Histórico':
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const HistoricoScreen()));
+        break;
+      case 'Dar Meu Feedback':
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const FeedbackScreen()));
+        break;
+      case 'Suporte':
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const SuporteScreen()));
+        break;
+      case 'Configurações':
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const ConfiguracoesScreen()));
+        break;
+      case 'Sobre Nós':
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const SobreNosScreen()));
+        break;
+    }
+  }
+
+  Widget _buildEventosVitrine() {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Text('🎆', style: TextStyle(fontSize: 24)),
+              const SizedBox(width: 8),
+              Text(
+                'Nossas Novidades',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 280,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: eventos.map((evento) {
+                  return Container(
+                    width: 250,
+                    margin: const EdgeInsets.only(right: 16),
+                    child: Card(
+                      elevation: 8,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetalhesEventoScreen(evento: evento),
+                            ),
+                          );
+                        },
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Colors.white, Color(0xFFFCE4EC)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    color: primaryColor,
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Icon(
+                                    _getEventIcon(evento['nome']),
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  evento['nome'],
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  evento['descricao'],
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey[600],
+                                  ),
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const Spacer(),
+                                Row(
+                                  children: [
+                                    Icon(Icons.calendar_today, size: 14, color: Colors.grey[600]),
+                                    const SizedBox(width: 4),
+                                    Expanded(
+                                      child: Text(
+                                        evento['dataEvento'],
+                                        style: TextStyle(fontSize: 11, color: Colors.grey[600]),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    color: primaryColor,
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Text(
+                                    evento['preco'] == 0 ? 'GRATUITO' : 'R\$ ${evento['preco'].toStringAsFixed(2)}',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  IconData _getEventIcon(String nome) {
+    if (nome.toLowerCase().contains('bazar')) return Icons.shopping_bag;
+    if (nome.toLowerCase().contains('show') || nome.toLowerCase().contains('rock')) return Icons.music_note;
+    if (nome.toLowerCase().contains('almoço') || nome.toLowerCase().contains('comida')) return Icons.restaurant;
+    return Icons.event;
+  }
+
+  Widget _buildFooter() {
+    return Container(
+      width: double.infinity,
+      color: primaryColor,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          const Text(
+            'CORAÇÃO GENEROSO',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Abrindo Instagram...')),
+                  );
+                },
+                child: const Text(
+                  '@coracaogeneroso',
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Abrindo Facebook...')),
+                  );
+                },
+                child: const Text(
+                  'Facebook',
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Ligando para (11) 99999-9999...')),
+                  );
+                },
+                child: const Text(
+                  '(11) 99999-9999',
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            '© 2025 Coração Generoso',
+            style: TextStyle(
+              color: Colors.white70,
+              fontSize: 10,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
+        title: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.favorite, color: accentColor, size: 28),
-            const SizedBox(width: 8),
-            const Text('CORAÇÃO GENEROSO'),
+            Text('❤️', style: TextStyle(fontSize: 24)),
+            SizedBox(width: 8),
+            Text('CORAÇÃO GENEROSO'),
           ],
         ),
         centerTitle: true,
-        bottom: TabBar(
-          controller: _tabController,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
-          indicatorColor: Colors.white,
-          tabs: tabs.map((t) => Tab(text: t)).toList(),
-          isScrollable: true,
-        ),
       ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(color: primaryColor),
-              child: const Center(
-                child: Text(
-                  'MENU',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFFD32F2F), Color.fromRGBO(211, 47, 47, 0.8)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
               ),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('❤️', style: TextStyle(fontSize: 50)),
+                  SizedBox(height: 8),
+                  Text(
+                    'CORAÇÃO GENEROSO',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Bem-vindo!',
+                    style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14),
+                  ),
+                ],
+              ),
             ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Perfil'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/perfil');
-              },
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: const Color(0xFFFCE4EC),
+              ),
+              child: ListTile(
+                leading: const Icon(Icons.home, color: Color(0xFFD32F2F)),
+                title: const Text('Início'),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+                onTap: () => Navigator.pop(context),
+              ),
             ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Configurações'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/configuracoes');
-              },
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[50],
+              ),
+              child: ListTile(
+                leading: const Icon(Icons.person, color: Color(0xFFD32F2F)),
+                title: const Text('Perfil'),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/perfil');
+                },
+              ),
             ),
-            ListTile(
-              leading: const Icon(Icons.info),
-              title: const Text('Sobre Nós'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/sobre-nos');
-              },
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[50],
+              ),
+              child: ListTile(
+                leading: const Icon(Icons.event, color: Color(0xFFD32F2F)),
+                title: const Text('Meus Eventos'),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MeusEventosScreen()),
+                  );
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[50],
+              ),
+              child: ListTile(
+                leading: const Icon(Icons.confirmation_number, color: Color(0xFFD32F2F)),
+                title: const Text('Meus Ingressos'),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MeusIngressosScreen()),
+                  );
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[50],
+              ),
+              child: ListTile(
+                leading: const Icon(Icons.favorite, color: Color(0xFFD32F2F)),
+                title: const Text('Favoritos'),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const FavoritosScreen()),
+                  );
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[50],
+              ),
+              child: ListTile(
+                leading: const Icon(Icons.history, color: Color(0xFFD32F2F)),
+                title: const Text('Histórico'),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HistoricoScreen()),
+                  );
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[50],
+              ),
+              child: ListTile(
+                leading: const Icon(Icons.rate_review, color: Color(0xFFD32F2F)),
+                title: const Text('Dar Meu Feedback'),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const FeedbackScreen()),
+                  );
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[50],
+              ),
+              child: ListTile(
+                leading: const Icon(Icons.support_agent, color: Color(0xFFD32F2F)),
+                title: const Text('Suporte'),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SuporteScreen()),
+                  );
+                },
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Divider(),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[50],
+              ),
+              child: ListTile(
+                leading: const Icon(Icons.settings, color: Color(0xFFD32F2F)),
+                title: const Text('Configurações'),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ConfiguracoesScreen()),
+                  );
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[50],
+              ),
+              child: ListTile(
+                leading: const Icon(Icons.info, color: Color(0xFFD32F2F)),
+                title: const Text('Sobre Nós'),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SobreNosScreen()),
+                  );
+                },
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.red[50],
+              ),
+              child: ListTile(
+                leading: const Icon(Icons.logout, color: Colors.red),
+                title: const Text('Sair', style: TextStyle(color: Colors.red)),
+                trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushReplacementNamed(context, '/');
+                },
+              ),
             ),
           ],
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: _tabViews,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildSearchBar(),
+            _searchQuery.isNotEmpty ? _buildSearchResults() : _buildInfoSection(),
+            _searchQuery.isEmpty ? _buildEventosVitrine() : const SizedBox(),
+            _buildFooter(),
+          ],
+        ),
       ),
     );
   }

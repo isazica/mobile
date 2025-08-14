@@ -1,255 +1,491 @@
 import 'package:flutter/material.dart';
 
-class SobreNosScreen extends StatefulWidget {
+class SobreNosScreen extends StatelessWidget {
   const SobreNosScreen({super.key});
 
   @override
-  State<SobreNosScreen> createState() => _SobreNosScreenState();
-}
-
-class _SobreNosScreenState extends State<SobreNosScreen> {
-  final Color primaryColor = const Color(0xFFD32F2F);
-  final Color secondaryColor = const Color(0xFF616161);
-  final Color accentColor = const Color(0xFFF8BBD9);
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
-
-  final List<String> carrosselImages = [
-    'https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=800&q=60',
-    'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=800&q=60',
-    'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=60',
-    'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=800&q=60',
-  ];
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    const Color primaryColor = Color(0xFFDC143C);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sobre Nós'),
-        backgroundColor: primaryColor,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
+        title: const Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            _buildCarrossel(),
-            _buildContent(),
+            Text('ℹ️', style: TextStyle(fontSize: 24)),
+            SizedBox(width: 8),
+            Text('Sobre Nós'),
           ],
         ),
+        backgroundColor: primaryColor,
+        foregroundColor: Colors.white,
+        centerTitle: true,
       ),
-    );
-  }
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header com logo
+            Center(
+              child: Column(
+                children: [
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: const BoxDecoration(
+                      color: primaryColor,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Center(
+                      child: Text('❤️', style: TextStyle(fontSize: 50)),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'CORAÇÃO GENEROSO',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: primaryColor,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Transformando vidas através da solidariedade',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
 
-  Widget _buildCarrossel() {
-    return Container(
-      height: 250,
-      child: Stack(
-        children: [
-          PageView.builder(
-            controller: _pageController,
-            onPageChanged: (index) {
-              setState(() {
-                _currentPage = index;
-              });
-            },
-            itemCount: carrosselImages.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            const SizedBox(height: 32),
+
+            // Nossa Missão
+            Card(
+              child: Container(
                 decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Colors.white, Color(0xFFFCE4EC)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                   borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
+                ),
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Text('🎯', style: TextStyle(fontSize: 24)),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Nossa Missão',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Nossa missão é dar visibilidade às pessoas em situação de vulnerabilidade social e fortalecer nossa organização para alcançar cada vez mais pessoas que precisam de apoio.',
+                      style: TextStyle(fontSize: 16, height: 1.5),
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Acreditamos que através de eventos solidários e ações comunitárias, podemos construir uma sociedade mais justa e igualitária, onde todos tenham oportunidades de crescer e prosperar.',
+                      style: TextStyle(fontSize: 16, height: 1.5),
                     ),
                   ],
                 ),
-                child: ClipRRect(
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Nossos Valores
+            Card(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Colors.white, Color(0xFFFCE4EC)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    carrosselImages[index],
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    errorBuilder: (_, __, ___) => Container(
-                      color: Colors.grey[300],
-                      child: const Center(
-                        child: Icon(Icons.image, size: 60, color: Colors.grey),
-                      ),
+                ),
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Text('⭐', style: TextStyle(fontSize: 24)),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Nossos Valores',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: primaryColor,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-              );
-            },
-          ),
-          Positioned(
-            bottom: 16,
-            left: 0,
-            right: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                carrosselImages.length,
-                (index) => Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _currentPage == index ? primaryColor : Colors.white.withOpacity(0.5),
-                  ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              const Text('🤝', style: TextStyle(fontSize: 32)),
+                              const SizedBox(height: 8),
+                              const Text(
+                                'Solidariedade',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Apoio mútuo e compaixão',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              const Text('🌟', style: TextStyle(fontSize: 32)),
+                              const SizedBox(height: 8),
+                              const Text(
+                                'Transparência',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Clareza em nossas ações',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              const Text('💪', style: TextStyle(fontSize: 32)),
+                              const SizedBox(height: 8),
+                              const Text(
+                                'Compromisso',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Dedicação à causa',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildContent() {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Text(
-              'CORAÇÃO GENEROSO',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: primaryColor,
+            const SizedBox(height: 16),
+
+            // Nossa Equipe
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Text('👥', style: TextStyle(fontSize: 24)),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Nossa Equipe',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Contamos com uma equipe dedicada de voluntários e profissionais comprometidos com nossa causa:',
+                      style: TextStyle(fontSize: 16, height: 1.5),
+                    ),
+                    const SizedBox(height: 16),
+                    
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: Colors.grey[300],
+                                  child: const Text('👩', style: TextStyle(fontSize: 25)),
+                                ),
+                                const SizedBox(height: 6),
+                                const Text(
+                                  'Isabella Marques',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  'Gerente',
+                                  style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: Colors.grey[300],
+                                  child: const Text('👨', style: TextStyle(fontSize: 25)),
+                                ),
+                                const SizedBox(height: 6),
+                                const Text(
+                                  'Pedro Henrique',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  'Designer',
+                                  style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: Colors.grey[300],
+                                  child: const Text('👩', style: TextStyle(fontSize: 25)),
+                                ),
+                                const SizedBox(height: 6),
+                                const Text(
+                                  'Nicolly Costa',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  'Time Scrum',
+                                  style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: Colors.grey[300],
+                                  child: const Text('👩', style: TextStyle(fontSize: 25)),
+                                ),
+                                const SizedBox(height: 6),
+                                const Text(
+                                  'Rafaella Kolle',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  'Time Scrum',
+                                  style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: Colors.grey[300],
+                                  child: const Text('👨', style: TextStyle(fontSize: 25)),
+                                ),
+                                const SizedBox(height: 6),
+                                const Text(
+                                  'Guilherme Felix',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  'Time Scrum',
+                                  style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: Colors.grey[300],
+                                  child: const Text('👨', style: TextStyle(fontSize: 25)),
+                                ),
+                                const SizedBox(height: 6),
+                                const Text(
+                                  'Arthur Silva',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  'Designer',
+                                  style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 24),
-          _buildSection(
-            icon: Icons.favorite,
-            title: 'Nossa Missão',
-            description: 'Dar visibilidade e arrecadar meios de ajuda para a ONG Coração Generoso, conectando pessoas generosas com causas que transformam vidas.',
-          ),
-          _buildSection(
-            icon: Icons.visibility,
-            title: 'Objetivo do App',
-            description: 'Este aplicativo foi criado para facilitar a participação em eventos beneficentes, aumentar a visibilidade das ações da ONG e simplificar o processo de doações e voluntariado.',
-          ),
-          _buildSection(
-            icon: Icons.people,
-            title: 'Comunidade',
-            description: 'Somos uma comunidade de pessoas que acreditam no poder da solidariedade. Juntos, organizamos eventos, bazares, almoços comunitários e shows beneficentes.',
-          ),
-          _buildSection(
-            icon: Icons.handshake,
-            title: 'Como Ajudar',
-            description: 'Participe dos nossos eventos, faça doações, seja voluntário ou simplesmente compartilhe nossa causa. Cada gesto conta para fazer a diferença na vida de quem precisa.',
-          ),
-          const SizedBox(height: 32),
-          _buildContactInfo(),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildSection({
-    required IconData icon,
-    required String title,
-    required String description,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 24),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: accentColor.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              icon,
-              color: primaryColor,
-              size: 28,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  description,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    height: 1.5,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+            const SizedBox(height: 16),
 
-  Widget _buildContactInfo() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: accentColor.withOpacity(0.5),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        children: [
-          Text(
-            'Entre em Contato',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: primaryColor,
+            // Estatísticas
+            Card(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Colors.white, Color(0xFFFCE4EC)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Text('📊', style: TextStyle(fontSize: 24)),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Nosso Impacto',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              '500+',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: primaryColor,
+                              ),
+                            ),
+                            const Text('Voluntários'),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              '50+',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: primaryColor,
+                              ),
+                            ),
+                            const Text('Eventos'),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              '2000+',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: primaryColor,
+                              ),
+                            ),
+                            const Text('Pessoas Ajudadas'),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Icon(Icons.email, color: primaryColor),
-              const SizedBox(width: 12),
-              const Text('contato@coracaogeneroso.org'),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Icon(Icons.phone, color: primaryColor),
-              const SizedBox(width: 12),
-              const Text('(11) 99999-9999'),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Icon(Icons.location_on, color: primaryColor),
-              const SizedBox(width: 12),
-              const Expanded(child: Text('São Paulo, SP - Brasil')),
-            ],
-          ),
-        ],
+
+            const SizedBox(height: 16),
+
+            // Contato
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Text('📞', style: TextStyle(fontSize: 24)),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Entre em Contato',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Quer fazer parte da nossa missão? Entre em contato conosco:',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 12),
+                    const Text('📧 contato@coracaogeneroso.org'),
+                    const Text('📱 (11) 99999-9999'),
+                    const Text('📍 São Paulo, SP'),
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 32),
+          ],
+        ),
       ),
     );
   }

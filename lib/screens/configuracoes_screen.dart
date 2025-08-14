@@ -8,105 +8,31 @@ class ConfiguracoesScreen extends StatefulWidget {
 }
 
 class _ConfiguracoesScreenState extends State<ConfiguracoesScreen> {
-  final Color primaryColor = const Color(0xFFD32F2F);
-  final Color secondaryColor = const Color(0xFF616161);
-  final Color accentColor = const Color(0xFFF8BBD9);
+  final Color primaryColor = const Color(0xFFDC143C);
   
-  bool notificacoesAtivas = true;
-  bool cameraPermitida = true;
-  bool notificacoesBloqueadas = false;
-  String idiomaAtual = 'Português';
+  bool _notificacoesEventos = true;
+  bool _notificacoesLembretes = true;
+  bool _notificacoesSistema = false;
+  bool _perfilPublico = true;
+  bool _compartilharDados = false;
+  String _idiomaSelecionado = 'Português';
+  final String _armazenamentoUsado = '2.3 MB';
 
-  final List<Map<String, dynamic>> presencasEventos = [
-    {'nome': 'Bazar de Natal', 'data': '10/12/2024', 'presente': true},
-    {'nome': 'Show de Rock', 'data': '15/08/2024', 'presente': false},
-    {'nome': 'Almoço Comunitário', 'data': '01/09/2024', 'presente': true},
-  ];
-
-  void _convidarAmigos() {
+  void _mostrarDialogIdioma() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Convidar Amigos'),
-        content: const Text('Compartilhe o link do app:\nhttps://coracaogeneroso.app'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Fechar'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Compartilhar'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _verPrivacidade() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Privacidade'),
-        content: const Text('Suas informações são protegidas conforme nossa política de privacidade.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _verPresencas() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Presenças nos Eventos'),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: presencasEventos.length,
-            itemBuilder: (context, index) {
-              final evento = presencasEventos[index];
-              return ListTile(
-                title: Text(evento['nome']),
-                subtitle: Text(evento['data']),
-                trailing: Icon(
-                  evento['presente'] ? Icons.check_circle : Icons.cancel,
-                  color: evento['presente'] ? Colors.green : Colors.red,
-                ),
-              );
-            },
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Fechar'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _alterarIdioma() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Idioma do App'),
+        title: const Text('Selecionar Idioma'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             RadioListTile<String>(
               title: const Text('Português'),
               value: 'Português',
-              groupValue: idiomaAtual,
+              groupValue: _idiomaSelecionado,
               onChanged: (value) {
                 setState(() {
-                  idiomaAtual = value!;
+                  _idiomaSelecionado = value!;
                 });
                 Navigator.pop(context);
               },
@@ -114,10 +40,10 @@ class _ConfiguracoesScreenState extends State<ConfiguracoesScreen> {
             RadioListTile<String>(
               title: const Text('English'),
               value: 'English',
-              groupValue: idiomaAtual,
+              groupValue: _idiomaSelecionado,
               onChanged: (value) {
                 setState(() {
-                  idiomaAtual = value!;
+                  _idiomaSelecionado = value!;
                 });
                 Navigator.pop(context);
               },
@@ -125,10 +51,10 @@ class _ConfiguracoesScreenState extends State<ConfiguracoesScreen> {
             RadioListTile<String>(
               title: const Text('Español'),
               value: 'Español',
-              groupValue: idiomaAtual,
+              groupValue: _idiomaSelecionado,
               onChanged: (value) {
                 setState(() {
-                  idiomaAtual = value!;
+                  _idiomaSelecionado = value!;
                 });
                 Navigator.pop(context);
               },
@@ -139,134 +65,275 @@ class _ConfiguracoesScreenState extends State<ConfiguracoesScreen> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Configurações'),
-        backgroundColor: primaryColor,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          _buildSection('Geral', [
-            _buildSwitchTile(
-              icon: Icons.notifications,
-              title: 'Notificações',
-              subtitle: 'Receber notificações do app',
-              value: notificacoesAtivas,
-              onChanged: (value) {
-                setState(() {
-                  notificacoesAtivas = value;
-                });
-              },
-            ),
-            _buildTile(
-              icon: Icons.person_add,
-              title: 'Convidar Amigos',
-              subtitle: 'Compartilhe o app com seus amigos',
-              onTap: _convidarAmigos,
-            ),
-            _buildTile(
-              icon: Icons.privacy_tip,
-              title: 'Privacidade',
-              subtitle: 'Política de privacidade',
-              onTap: _verPrivacidade,
-            ),
-            _buildTile(
-              icon: Icons.event_available,
-              title: 'Presenças nos Eventos',
-              subtitle: 'Histórico de participação',
-              onTap: _verPresencas,
-            ),
-            _buildTile(
-              icon: Icons.language,
-              title: 'Idioma do App',
-              subtitle: idiomaAtual,
-              onTap: _alterarIdioma,
-            ),
-          ]),
-          const SizedBox(height: 24),
-          _buildSection('Permissões', [
-            _buildSwitchTile(
-              icon: Icons.camera_alt,
-              title: 'Câmera',
-              subtitle: 'Permitir acesso à câmera',
-              value: cameraPermitida,
-              onChanged: (value) {
-                setState(() {
-                  cameraPermitida = value;
-                });
-              },
-            ),
-            _buildSwitchTile(
-              icon: Icons.notifications_off,
-              title: 'Bloquear Notificações',
-              subtitle: 'Bloquear todas as notificações',
-              value: notificacoesBloqueadas,
-              onChanged: (value) {
-                setState(() {
-                  notificacoesBloqueadas = value;
-                });
-              },
-            ),
-          ]),
+  void _limparCache() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Limpar Cache'),
+        content: const Text('Isso irá limpar dados temporários e pode melhorar o desempenho. Continuar?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Cache limpo com sucesso!')),
+              );
+            },
+            child: const Text('Limpar'),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildSection(String title, List<Widget> children) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 16, bottom: 8),
-          child: Text(
+  void _exportarDados() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Exportar Dados'),
+        content: const Text('Seus dados pessoais serão enviados por email em formato PDF.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Dados exportados! Verifique seu email.')),
+              );
+            },
+            child: const Text('Exportar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _excluirConta() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Excluir Conta'),
+        content: const Text('⚠️ Esta ação é irreversível! Todos os seus dados serão permanentemente removidos.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Conta excluída com sucesso!')),
+              );
+            },
+            child: const Text('Excluir', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title, String emoji) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+      child: Row(
+        children: [
+          Text(emoji, style: const TextStyle(fontSize: 20)),
+          const SizedBox(width: 8),
+          Text(
             title,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
               color: primaryColor,
             ),
           ),
-        ),
-        Card(
-          child: Column(children: children),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  Widget _buildTile({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required VoidCallback onTap,
-  }) {
-    return ListTile(
-      leading: Icon(icon, color: primaryColor),
-      title: Text(title),
-      subtitle: Text(subtitle),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-      onTap: onTap,
+  Widget _buildSwitchTile(String title, String subtitle, bool value, Function(bool) onChanged) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: SwitchListTile(
+        title: Text(title),
+        subtitle: Text(subtitle, style: TextStyle(color: Colors.grey[600])),
+        value: value,
+        onChanged: onChanged,
+        activeColor: primaryColor,
+      ),
     );
   }
 
-  Widget _buildSwitchTile({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required bool value,
-    required ValueChanged<bool> onChanged,
-  }) {
-    return SwitchListTile(
-      secondary: Icon(icon, color: primaryColor),
-      title: Text(title),
-      subtitle: Text(subtitle),
-      value: value,
-      activeColor: primaryColor,
-      onChanged: onChanged,
+  Widget _buildListTile(String title, String subtitle, IconData icon, VoidCallback onTap) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: ListTile(
+        leading: Icon(icon, color: primaryColor),
+        title: Text(title),
+        subtitle: Text(subtitle, style: TextStyle(color: Colors.grey[600])),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: onTap,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('⚙️', style: TextStyle(fontSize: 24)),
+            SizedBox(width: 8),
+            Text('Configurações'),
+          ],
+        ),
+        backgroundColor: primaryColor,
+        foregroundColor: Colors.white,
+        centerTitle: true,
+      ),
+      body: ListView(
+        children: [
+          _buildSectionHeader('Notificações', '🔔'),
+          _buildSwitchTile(
+            'Eventos',
+            'Receber notificações sobre novos eventos',
+            _notificacoesEventos,
+            (value) => setState(() => _notificacoesEventos = value),
+          ),
+          _buildSwitchTile(
+            'Lembretes',
+            'Lembretes de eventos que você se inscreveu',
+            _notificacoesLembretes,
+            (value) => setState(() => _notificacoesLembretes = value),
+          ),
+          _buildSwitchTile(
+            'Sistema',
+            'Atualizações e informações do sistema',
+            _notificacoesSistema,
+            (value) => setState(() => _notificacoesSistema = value),
+          ),
+
+          _buildSectionHeader('Privacidade', '🔒'),
+          _buildSwitchTile(
+            'Perfil Público',
+            'Permitir que outros usuários vejam seu perfil',
+            _perfilPublico,
+            (value) => setState(() => _perfilPublico = value),
+          ),
+          _buildSwitchTile(
+            'Compartilhar Dados',
+            'Compartilhar dados anônimos para melhorias',
+            _compartilharDados,
+            (value) => setState(() => _compartilharDados = value),
+          ),
+
+          _buildSectionHeader('Preferências', '🎨'),
+          _buildListTile(
+            'Idioma',
+            _idiomaSelecionado,
+            Icons.language,
+            _mostrarDialogIdioma,
+          ),
+
+          _buildSectionHeader('Dados Pessoais', '👤'),
+          _buildListTile(
+            'Exportar Dados',
+            'Baixar uma cópia dos seus dados',
+            Icons.download,
+            _exportarDados,
+          ),
+          _buildListTile(
+            'Excluir Conta',
+            'Remover permanentemente sua conta',
+            Icons.delete_forever,
+            _excluirConta,
+          ),
+
+          _buildSectionHeader('Armazenamento', '💾'),
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: ListTile(
+              leading: Icon(Icons.storage, color: primaryColor),
+              title: const Text('Dados do App'),
+              subtitle: Text('Usado: $_armazenamentoUsado', style: TextStyle(color: Colors.grey[600])),
+              trailing: TextButton(
+                onPressed: _limparCache,
+                child: const Text('Limpar Cache'),
+              ),
+            ),
+          ),
+
+          _buildSectionHeader('Permissões', '🛡️'),
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: ListTile(
+              leading: Icon(Icons.camera_alt, color: primaryColor),
+              title: const Text('Câmera'),
+              subtitle: Text('Permitir acesso à câmera', style: TextStyle(color: Colors.grey[600])),
+              trailing: const Text('Permitido', style: TextStyle(color: Colors.green)),
+            ),
+          ),
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: ListTile(
+              leading: Icon(Icons.notifications, color: primaryColor),
+              title: const Text('Notificações'),
+              subtitle: Text('Permitir notificações push', style: TextStyle(color: Colors.grey[600])),
+              trailing: const Text('Permitido', style: TextStyle(color: Colors.green)),
+            ),
+          ),
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: ListTile(
+              leading: Icon(Icons.location_on, color: primaryColor),
+              title: const Text('Localização'),
+              subtitle: Text('Acesso à localização para eventos', style: TextStyle(color: Colors.grey[600])),
+              trailing: const Text('Negado', style: TextStyle(color: Colors.red)),
+            ),
+          ),
+
+          _buildSectionHeader('Sobre', 'ℹ️'),
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: ListTile(
+              leading: Icon(Icons.info, color: primaryColor),
+              title: const Text('Versão do App'),
+              subtitle: Text('v1.0.0 (Build 1)', style: TextStyle(color: Colors.grey[600])),
+            ),
+          ),
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: ListTile(
+              leading: Icon(Icons.policy, color: primaryColor),
+              title: const Text('Política de Privacidade'),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () => Navigator.pushNamed(context, '/politica-privacidade'),
+            ),
+          ),
+          Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: ListTile(
+              leading: Icon(Icons.description, color: primaryColor),
+              title: const Text('Termos de Uso'),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () => Navigator.pushNamed(context, '/termos-uso'),
+            ),
+          ),
+
+          const SizedBox(height: 32),
+        ],
+      ),
     );
   }
 }

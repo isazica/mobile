@@ -30,22 +30,20 @@ class LoginScreenState extends State<LoginScreen> {
     if (email.isEmpty || senha.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Por favor, preencha todos os campos'),
+          content: const Text('Por favor, preencha todos os campos'),
           backgroundColor: primaryColor,
         ),
       );
       return;
     }
 
-    // Aqui você coloca a lógica do login (API, validação, etc)
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Login realizado com sucesso!'),
+        content: const Text('Login realizado com sucesso!'),
         backgroundColor: primaryColor,
       ),
     );
 
-    // Navegue para a tela inicial ou próxima tela após login
     Navigator.pushReplacementNamed(context, '/telaInicial');
   }
 
@@ -70,7 +68,7 @@ class LoginScreenState extends State<LoginScreen> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -78,8 +76,8 @@ class LoginScreenState extends State<LoginScreen> {
                 Center(
                   child: Container(
                     padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: accentColor.withOpacity(0.3),
+                    decoration: const BoxDecoration(
+                      color: Color.fromRGBO(248, 187, 217, 0.3),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
@@ -90,8 +88,8 @@ class LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                Text('Email', style: TextStyle(fontWeight: FontWeight.bold)),
-                SizedBox(height: 8),
+                const Text('Email', style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8),
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: primaryColor),
@@ -101,16 +99,16 @@ class LoginScreenState extends State<LoginScreen> {
                   child: TextField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       border: InputBorder.none,
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-                Text('Senha', style: TextStyle(fontWeight: FontWeight.bold)),
-                SizedBox(height: 8),
+                const Text('Senha', style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8),
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: primaryColor),
@@ -123,7 +121,7 @@ class LoginScreenState extends State<LoginScreen> {
                         child: TextField(
                           controller: _senhaController,
                           obscureText: _obscureText,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                             border: InputBorder.none,
                           ),
@@ -132,7 +130,7 @@ class LoginScreenState extends State<LoginScreen> {
                       GestureDetector(
                         onTap: () => setState(() => _obscureText = !_obscureText),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: Icon(
                             _obscureText ? Icons.visibility_off : Icons.visibility,
                             color: primaryColor,
@@ -142,24 +140,24 @@ class LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
 
                 ElevatedButton(
                   onPressed: _fazerLogin,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,
-                    padding: EdgeInsets.symmetric(vertical: 14),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Entrar',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
                   ),
                 ),
 
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
                 TextButton(
                   onPressed: _irParaCadastro,

@@ -159,8 +159,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 Center(
                   child: Container(
                     padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: accentColor.withOpacity(0.3),
+                    decoration: const BoxDecoration(
+                      color: Color.fromRGBO(248, 187, 217, 0.3),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
