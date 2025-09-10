@@ -88,7 +88,7 @@ class _PagamentoScreenState extends State<PagamentoScreen> {
             const Text('Forma de Pagamento:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
             
-            RadioListTile<String>(
+            ListTile(
               title: const Row(
                 children: [
                   Icon(Icons.pix, color: Color(0xFF32BCAD)),
@@ -96,12 +96,14 @@ class _PagamentoScreenState extends State<PagamentoScreen> {
                   Text('PIX'),
                 ],
               ),
-              value: 'pix',
-              groupValue: _metodoPagamento,
-              onChanged: (value) => setState(() {
-                _metodoPagamento = value!;
-                _mostrarCodigoPix = value == 'pix';
-              }),
+              leading: Radio<String>(
+                value: 'pix',
+                groupValue: _metodoPagamento,
+                onChanged: (value) => setState(() {
+                  _metodoPagamento = value!;
+                  _mostrarCodigoPix = value == 'pix';
+                }),
+              ),
             ),
             
             if (_mostrarCodigoPix)
@@ -169,7 +171,7 @@ class _PagamentoScreenState extends State<PagamentoScreen> {
                 ),
               ),
             
-            RadioListTile<String>(
+            ListTile(
               title: const Row(
                 children: [
                   Icon(Icons.credit_card, color: Colors.blue),
@@ -177,15 +179,17 @@ class _PagamentoScreenState extends State<PagamentoScreen> {
                   Text('Cartão de Débito'),
                 ],
               ),
-              value: 'debito',
-              groupValue: _metodoPagamento,
-              onChanged: (value) => setState(() {
-                _metodoPagamento = value!;
-                _mostrarCodigoPix = false;
-              }),
+              leading: Radio<String>(
+                value: 'debito',
+                groupValue: _metodoPagamento,
+                onChanged: (value) => setState(() {
+                  _metodoPagamento = value!;
+                  _mostrarCodigoPix = false;
+                }),
+              ),
             ),
             
-            RadioListTile<String>(
+            ListTile(
               title: const Row(
                 children: [
                   Icon(Icons.credit_card, color: Colors.orange),
@@ -193,12 +197,14 @@ class _PagamentoScreenState extends State<PagamentoScreen> {
                   Text('Cartão de Crédito'),
                 ],
               ),
-              value: 'credito',
-              groupValue: _metodoPagamento,
-              onChanged: (value) => setState(() {
-                _metodoPagamento = value!;
-                _mostrarCodigoPix = false;
-              }),
+              leading: Radio<String>(
+                value: 'credito',
+                groupValue: _metodoPagamento,
+                onChanged: (value) => setState(() {
+                  _metodoPagamento = value!;
+                  _mostrarCodigoPix = false;
+                }),
+              ),
             ),
             
             const Spacer(),

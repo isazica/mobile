@@ -12,6 +12,9 @@ class _PerfilScreenState extends State<PerfilScreen> {
   
   final TextEditingController _nomeController = TextEditingController(text: 'João Silva');
   final TextEditingController _descricaoController = TextEditingController(text: 'Voluntário ativo na comunidade');
+  final TextEditingController _senhaController = TextEditingController();
+  
+  bool _obscureSenha = true;
   
   bool _isEditing = false;
 
@@ -19,6 +22,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
   void dispose() {
     _nomeController.dispose();
     _descricaoController.dispose();
+    _senhaController.dispose();
     super.dispose();
   }
 
@@ -109,48 +113,6 @@ class _PerfilScreenState extends State<PerfilScreen> {
     );
   }
 
-  void _alterarSenha() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Row(
-          children: [
-            Icon(Icons.lock, color: Color(0xFFDC143C)),
-            SizedBox(width: 8),
-            Text('Alterar Senha'),
-          ],
-        ),
-        content: const Text(
-          'Deseja alterar sua senha? Você receberá um link por email para redefinir sua senha com segurança.',
-          style: TextStyle(fontSize: 16),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('📧 Link enviado para seu email!'),
-                  backgroundColor: Color(0xFFDC143C),
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFDC143C),
-              foregroundColor: Colors.white,
-            ),
-            child: const Text('Enviar Link'),
-          ),
-        ],
-      ),
-    );
-  }
-
   void _salvarPerfil() {
     setState(() {
       _isEditing = false;
@@ -170,7 +132,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
         title: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('👤', style: TextStyle(fontSize: 24)),
+            Icon(Icons.favorite_rounded, color: Colors.red, size: 24),
             SizedBox(width: 8),
             Text('Meu Perfil'),
           ],
@@ -202,7 +164,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
+                    color: Colors.grey.withValues(alpha: 0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 5),
                   ),
@@ -360,6 +322,56 @@ class _PerfilScreenState extends State<PerfilScreen> {
               ),
             ),
             
+            // Campo de senha compacto
+            Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    const Icon(Icons.lock, color: Color(0xFFDC143C)),
+                    const SizedBox(width: 8),
+                    const Text('Nova Senha:', style: TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: TextField(
+                        controller: _senhaController,
+                        obscureText: _obscureSenha,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          hintText: 'Digite nova senha',
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => setState(() => _obscureSenha = !_obscureSenha),
+                      icon: Icon(
+                        _obscureSenha ? Icons.visibility_off : Icons.visibility,
+                        color: const Color(0xFFDC143C),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_senhaController.text.isNotEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Senha alterada com sucesso!')),
+                          );
+                          _senhaController.clear();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFDC143C),
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text('Salvar'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            
             const SizedBox(height: 30),
             
             // Ações rápidas
@@ -379,22 +391,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                   ),
                   const SizedBox(height: 16),
                   
-                  ListTile(
-                    leading: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFCE4EC),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(Icons.lock, color: Color(0xFFDC143C)),
-                    ),
-                    title: const Text('Alterar Senha'),
-                    subtitle: const Text('Mantenha sua conta segura'),
-                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                    onTap: _alterarSenha,
-                  ),
-                  
-                  const Divider(),
+
                   
                   ListTile(
                     leading: Container(

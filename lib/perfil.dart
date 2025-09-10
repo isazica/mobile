@@ -1,64 +1,18 @@
 import 'package:flutter/material.dart';
 
-
-class PerfilScreen extends StatelessWidget {
-  final String nome;
-  final String email;
-  final String avatarUrl;
-  final String nivelAcesso;
-  final String statusUsuario;
-
-  const PerfilScreen({
-    super.key,
-    required this.nome,
-    required this.email,
-    required this.avatarUrl,
-    required this.nivelAcesso,
-    required this.statusUsuario,
-  });
+class PerfilLegacyScreen extends StatelessWidget {
+  const PerfilLegacyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Perfil de $nome'),
+        title: const Text('Perfil Legacy'),
+        backgroundColor: const Color(0xFFD32F2F),
+        foregroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            CircleAvatar(
-              radius: 60,
-              backgroundImage: NetworkImage(avatarUrl),
-              backgroundColor: Colors.grey[300],
-            ),
-            const SizedBox(height: 24),
-            Text(nome,
-                style:
-                    const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            Text(email, style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Chip(
-                  label: Text(nivelAcesso),
-                  backgroundColor: nivelAcesso == 'ADMIN'
-                      ? Colors.red.shade300
-                      : Colors.blue.shade300,
-                ),
-                const SizedBox(width: 12),
-                Chip(
-                  label: Text(statusUsuario),
-                  backgroundColor: statusUsuario == 'ATIVO'
-                      ? Colors.green.shade300
-                      : Colors.grey.shade400,
-                ),
-              ],
-            ),
-          ],
-        ),
+      body: const Center(
+        child: Text('Tela de Perfil Legacy'),
       ),
     );
   }

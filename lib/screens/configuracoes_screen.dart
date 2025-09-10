@@ -23,43 +23,54 @@ class _ConfiguracoesScreenState extends State<ConfiguracoesScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Selecionar Idioma'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile<String>(
-              title: const Text('Português'),
-              value: 'Português',
-              groupValue: _idiomaSelecionado,
-              onChanged: (value) {
-                setState(() {
-                  _idiomaSelecionado = value!;
-                });
-                Navigator.pop(context);
-              },
-            ),
-            RadioListTile<String>(
-              title: const Text('English'),
-              value: 'English',
-              groupValue: _idiomaSelecionado,
-              onChanged: (value) {
-                setState(() {
-                  _idiomaSelecionado = value!;
-                });
-                Navigator.pop(context);
-              },
-            ),
-            RadioListTile<String>(
-              title: const Text('Español'),
-              value: 'Español',
-              groupValue: _idiomaSelecionado,
-              onChanged: (value) {
-                setState(() {
-                  _idiomaSelecionado = value!;
-                });
-                Navigator.pop(context);
-              },
-            ),
-          ],
+        content: StatefulBuilder(
+          builder: (context, setDialogState) => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: const Text('Português'),
+                leading: Radio<String>(
+                  value: 'Português',
+                  groupValue: _idiomaSelecionado,
+                  onChanged: (value) {
+                    setState(() {
+                      _idiomaSelecionado = value!;
+                    });
+                    setDialogState(() {});
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              ListTile(
+                title: const Text('English'),
+                leading: Radio<String>(
+                  value: 'English',
+                  groupValue: _idiomaSelecionado,
+                  onChanged: (value) {
+                    setState(() {
+                      _idiomaSelecionado = value!;
+                    });
+                    setDialogState(() {});
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              ListTile(
+                title: const Text('Español'),
+                leading: Radio<String>(
+                  value: 'Español',
+                  groupValue: _idiomaSelecionado,
+                  onChanged: (value) {
+                    setState(() {
+                      _idiomaSelecionado = value!;
+                    });
+                    setDialogState(() {});
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -168,7 +179,7 @@ class _ConfiguracoesScreenState extends State<ConfiguracoesScreen> {
         subtitle: Text(subtitle, style: TextStyle(color: Colors.grey[600])),
         value: value,
         onChanged: onChanged,
-        activeColor: primaryColor,
+        activeThumbColor: primaryColor,
       ),
     );
   }
@@ -193,7 +204,7 @@ class _ConfiguracoesScreenState extends State<ConfiguracoesScreen> {
         title: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('⚙️', style: TextStyle(fontSize: 24)),
+            Icon(Icons.favorite_rounded, color: Colors.red, size: 24),
             SizedBox(width: 8),
             Text('Configurações'),
           ],

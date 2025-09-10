@@ -12,7 +12,7 @@ class SobreNosScreen extends StatelessWidget {
         title: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('ℹ️', style: TextStyle(fontSize: 24)),
+            Icon(Icons.favorite_rounded, color: Colors.red, size: 24),
             SizedBox(width: 8),
             Text('Sobre Nós'),
           ],

@@ -91,8 +91,12 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
     );
 
-    // Após cadastro, pode navegar para o login, por exemplo:
-    Navigator.pushReplacementNamed(context, '/login');
+    // Aguarda um pouco para mostrar a mensagem e depois navega para o login
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/');
+      }
+    });
   }
 
   Widget _buildDropdown<T>({
@@ -141,7 +145,7 @@ class _SignupScreenState extends State<SignupScreen> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.favorite, color: accentColor, size: 24),
+            Icon(Icons.favorite_rounded, color: Colors.red, size: 24),
             const SizedBox(width: 8),
             const Text('Cadastro'),
           ],

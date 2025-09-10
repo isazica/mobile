@@ -58,7 +58,7 @@ class LoginScreenState extends State<LoginScreen> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.favorite, color: accentColor, size: 24),
+            Icon(Icons.favorite_rounded, color: Colors.red, size: 24),
             const SizedBox(width: 8),
             const Text('Login'),
           ],

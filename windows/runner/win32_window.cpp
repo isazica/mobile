@@ -32,7 +32,7 @@ static int g_active_window_count = 0;
 using EnableNonClientDpiScaling = BOOL __stdcall(HWND hwnd);
 
 // Scale helper to convert logical scaler values to physical using passed in
-// scale factor
+// scale factor. Converts logical values to physical pixels using the provided scale factor.
 int Scale(int source, double scale_factor) {
   return static_cast<int>(source * scale_factor);
 }
@@ -62,10 +62,8 @@ class WindowClassRegistrar {
 
   // Returns the singleton registrar instance.
   static WindowClassRegistrar* GetInstance() {
-    if (!instance_) {
-      instance_ = new WindowClassRegistrar();
-    }
-    return instance_;
+    static WindowClassRegistrar instance;
+    return &instance;
   }
 
   // Returns the name of the window class, registering the class if it hasn't
@@ -112,6 +110,7 @@ void WindowClassRegistrar::UnregisterWindowClass() {
 }
 
 Win32Window::Win32Window() {
+  // Thread-safe increment using atomic operations would be better for multi-threaded scenarios
   ++g_active_window_count;
 }
 
@@ -160,12 +159,13 @@ LRESULT CALLBACK Win32Window::WndProc(HWND const window,
                                       LPARAM const lparam) noexcept {
   if (message == WM_NCCREATE) {
     auto window_struct = reinterpret_cast<CREATESTRUCT*>(lparam);
-    SetWindowLongPtr(window, GWLP_USERDATA,
-                     reinterpret_cast<LONG_PTR>(window_struct->lpCreateParams));
+    if (window_struct && window_struct->lpCreateParams) {
+      SetWindowLongPtr(window, GWLP_USERDATA,
+                       reinterpret_cast<LONG_PTR>(window_struct->lpCreateParams));
 
-    auto that = static_cast<Win32Window*>(window_struct->lpCreateParams);
-    EnableFullDpiSupportIfAvailable(window);
-    that->window_handle_ = window;
+        EnableFullDpiSupportIfAvailable(window);
+      that->window_handle_ = window;
+    }
   } else if (Win32Window* that = GetThisFromHandle(window)) {
     return that->MessageHandler(window, message, wparam, lparam);
   }
@@ -216,6 +216,9 @@ Win32Window::MessageHandler(HWND hwnd,
     case WM_DWMCOLORIZATIONCOLORCHANGED:
       UpdateTheme(hwnd);
       return 0;
+    
+    default:
+      break;
   }
 
   return DefWindowProc(window_handle_, message, wparam, lparam);
@@ -250,8 +253,10 @@ void Win32Window::SetChildContent(HWND content) {
 }
 
 RECT Win32Window::GetClientArea() {
-  RECT frame;
-  GetClientRect(window_handle_, &frame);
+  RECT frame = {};
+  if (window_handle_) {
+    GetClientRect(window_handle_, &frame);
+  }
   return frame;
 }
 

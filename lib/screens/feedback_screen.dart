@@ -166,7 +166,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               filled: true,
-                              fillColor: const Color(0xFFFCE4EC).withOpacity(0.3),
+                              fillColor: const Color(0xFFFCE4EC).withValues(alpha: 0.3),
                             ),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
@@ -226,7 +226,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               filled: true,
-                              fillColor: const Color(0xFFFCE4EC).withOpacity(0.3),
+                              fillColor: const Color(0xFFFCE4EC).withValues(alpha: 0.3),
                             ),
                             maxLines: 5,
                             validator: (value) {
@@ -252,7 +252,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFFD32F2F).withOpacity(0.3),
+                          color: const Color(0xFFD32F2F).withValues(alpha: 0.3),
                           blurRadius: 8,
                           offset: const Offset(0, 4),
                         ),
@@ -288,7 +288,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFCE4EC).withOpacity(0.5),
+                      color: const Color(0xFFFCE4EC).withValues(alpha: 0.5),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(

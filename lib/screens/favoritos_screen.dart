@@ -384,7 +384,7 @@ class _FavoritosScreenState extends State<FavoritosScreen> with SingleTickerProv
         title: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('❤️', style: TextStyle(fontSize: 24)),
+            Icon(Icons.favorite_rounded, color: Colors.red, size: 24),
             SizedBox(width: 8),
             Text('Favoritos'),
           ],

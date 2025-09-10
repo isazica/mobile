@@ -18,6 +18,7 @@ class IngressoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final codigoIngresso = _gerarCodigoIngresso();
+    final preco = evento['preco'].toStringAsFixed(2);
     
     return Scaffold(
       appBar: AppBar(
@@ -56,7 +57,7 @@ class IngressoScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
+                        color: Colors.grey.withValues(alpha: 0.3),
                         blurRadius: 10,
                         offset: const Offset(0, 5),
                       ),
@@ -101,7 +102,7 @@ class IngressoScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: QrImageView(
-                            data: 'CG-${codigoIngresso}-${evento['nome']}-${evento['dataEvento']}',
+                            data: 'CG-$codigoIngresso-${evento['nome']}-${evento['dataEvento']}',
                             version: QrVersions.auto,
                             size: 120.0,
                           ),
@@ -120,7 +121,7 @@ class IngressoScreen extends StatelessWidget {
                               _buildInfoRow('📅 Data:', evento['dataEvento']),
                               _buildInfoRow('⏰ Período:', evento['periodo']),
                               _buildInfoRow('📍 Local:', evento['localEvento']),
-                              _buildInfoRow('💰 Valor:', 'R\$ ${evento['preco'].toStringAsFixed(2)}'),
+                              _buildInfoRow('💰 Valor:', 'R\$ $preco'),
                               const Divider(),
                               _buildInfoRow('🎫 Código:', codigoIngresso),
                             ],
